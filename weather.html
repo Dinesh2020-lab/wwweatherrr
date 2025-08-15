@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather App - Card Style</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom right, #74ABE2, #5563DE);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .weather-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      width: 360px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+    .search-box {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 10px 0 0 10px;
+      outline: none;
+      font-size: 16px;
+    }
+    .search-box button {
+      padding: 10px 15px;
+      border: none;
+      background: #ffcc70;
+      color: #333;
+      border-radius: 0 10px 10px 0;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .temp {
+      font-size: 60px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .condition {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    .details {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .details div {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="weather-card">
+    <div class="search-box">
+      <input type="text" id="cityInput" placeholder="Enter city" />
+      <button onclick="getWeather()">Search</button>
+    </div>
+    <h2 id="city">City</h2>
+    <div class="temp" id="temp">--°C</div>
+    <div class="condition" id="condition">--</div>
+    <div class="details">
+      <div>
+        <div id="humidity">--%</div>
+        <small>Humidity</small>
+      </div>
+      <div>
+        <div id="wind">-- km/h</div>
+        <small>Wind</small>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function getWeather() {
+      const city = document.getElementById('cityInput').value;
+      if (!city) return alert('Please enter a city');
+      const apiKey = 'f0aa00597bff4faa925170916251508'; // WeatherAPI key
+      const url = https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('City not found');
+        const data = await res.json();
+        document.getElementById('city').innerText = data.location.name;
+        document.getElementById('temp').innerText = data.current.temp_c + '°C';
+        document.getElementById('condition').innerText = data.current.condition.text;
+        document.getElementById('humidity').innerText = data.current.humidity + '%';
+        document.getElementById('wind').innerText = data.current.wind_kph + ' km/h';
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+  </script>
+</body>
+</html>
